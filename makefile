@@ -2,7 +2,7 @@
 include .env
 export $(shell sed 's/=.*//' .env)
 
-.PHONY: postgres createdb dropdb migrateup
+.PHONY: postgres createdb dropdb migrateup migratedown sqlc test
 
 postgres:
 	docker run --name postgres_lts -p 5432:5432 -e POSTGRES_USER=$(POSTGRES_USER) -e POSTGRES_PASSWORD=$(POSTGRES_PASSWORD) -d postgres
@@ -17,4 +17,10 @@ migrateup:
 	migrate --path db/migration --database "postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@localhost:5432/simple_bank?sslmode=disable" --verbose up
 
 migratedown:
-			migrate --path db/migration --database "postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@localhost:5432/simple_bank?sslmode=disable" --verbose down
+	migrate --path db/migration --database "postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@localhost:5432/simple_bank?sslmode=disable" --verbose down
+
+sqlc:
+	sqlc generate	
+
+test:
+	go test -v -cover ./...		
