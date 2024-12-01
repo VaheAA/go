@@ -21,8 +21,9 @@ jobs:
         image: postgres
         # Provide the password for postgres
         env:
-          POSTGRES_USER: ${{ secrets.DB_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{secrets.POSTGRES_NAME}}
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
@@ -39,11 +40,13 @@ jobs:
 
     - name: Create .env file
       run: |
-        echo DB_USER=${{ secrets.DB_USER }} >> .env
-        echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> .env
+        echo DB_USER=${{ secrets.POSTGRES_USER }} >> .env
+        echo DB_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
+        echo DB_NAME=${{ secrets.POSTGRES_NAME }} >> .env
 
     - name: Test
       env:
-        DB_USER: ${{ secrets.DB_USER }}
-        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        DB_USER: ${{ secrets.POSTGRES_USER }}
+        DB_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        DB_NAME: ${{ secrets.POSTGRES_NAME }}
       run: make test
