@@ -41,7 +41,10 @@ jobs:
         echo POSTGRES_DB=${{ secrets.POSTGRES_NAME }} >> .env
 
     - name: Install migrate
-      run: "curl -L https://github.com/golang-migrate/migrate/releases/download/$version/migrate.$os-$arch.tar.gz | tar xvz"    
+      run:  | 
+        curl -L https://github.com/golang-migrate/migrate/releases/download/v4.18.1/migrate.linux-amd64.tar.gz | tar xvz
+        sudo mv migrate.linux-amd64 /usr/bin
+        which migrate
 
     - name: Run migrations
       run: make migrateup
