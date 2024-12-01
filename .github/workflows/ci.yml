@@ -42,6 +42,12 @@ jobs:
         echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
         echo POSTGRES_DB=${{ secrets.POSTGRES_DB }} >> .env
 
+    - name: Create app.env file
+      run: |
+        echo DB_DRIVER=${{ secrets.DB_DRIVER }} >> app.env
+        echo DB_SOURCE=${{ secrets.DB_SOURCE }} >> app.env
+        echo SERVER_ADDRESS=${{ secrets.SERVER_ADDRESS }} >> app.env
+
     - name: Install migrate
       run:  | 
         curl -L https://github.com/golang-migrate/migrate/releases/download/v4.18.1/migrate.linux-amd64.tar.gz | tar xvz
