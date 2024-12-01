@@ -16,10 +16,13 @@ const (
 )
 
 var testQueries *Queries
+var testDB *sql.DB
 
 func TestMain(m *testing.M) {
+	var err error
+
 	// Load the .env file
-	err := godotenv.Load("../../.env")
+	err = godotenv.Load("../../.env")
 	if err != nil {
 		log.Fatalf("Error loading .env file: %v", err)
 	}
@@ -35,14 +38,14 @@ func TestMain(m *testing.M) {
 	dbSource := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable",
 		dbUser, dbPassword, dbHost, dbPort, dbName)
 
-	conn, err := sql.Open(dbDriver, dbSource)
+	testDB, err = sql.Open(dbDriver, dbSource)
 
 	if err != nil {
 		log.Fatal("cannot connect to DB")
 	}
 
 	// Assign connection to Queries
-	testQueries = New(conn)
+	testQueries = New(testDB)
 
 	// Run the tests
 	os.Exit(m.Run())
