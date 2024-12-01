@@ -1,4 +1,4 @@
-.PHONY: postgres createdb dropdb migrateup migratedown sqlc test server
+.PHONY: postgres createdb dropdb migrateup migratedown sqlc test server mock
 
 postgres:
 	docker run --name postgres_lts -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=root -d postgres
@@ -23,3 +23,6 @@ test:
 
 server: 
 	go run main.go
+
+mock:
+	 mockgen -package mockdb --destination db/mock/store.go simplebank/db/sqlc Store	
