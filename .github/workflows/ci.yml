@@ -40,13 +40,13 @@ jobs:
 
     - name: Create .env file
       run: |
-        echo DB_USER=${{ secrets.POSTGRES_USER }} >> .env
-        echo DB_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
-        echo DB_NAME=${{ secrets.POSTGRES_NAME }} >> .env
+        echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> .env
+        echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
+        echo POSTGRES_DB=${{ secrets.POSTGRES_NAME }} >> .env
 
     - name: Test
       env:
-        DB_USER: ${{ secrets.POSTGRES_USER }}
-        DB_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-        DB_NAME: ${{ secrets.POSTGRES_NAME }}
+        POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+        POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        POSTGRES_DB: ${{ secrets.POSTGRES_NAME }}
       run: make test
